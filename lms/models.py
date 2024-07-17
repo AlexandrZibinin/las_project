@@ -24,9 +24,13 @@ class Lesson(models.Model):
         upload_to="lms/images", **NULLABLE, verbose_name="превью"
     )
     description = models.TextField(**NULLABLE, verbose_name="описание")
-    link_video = models.URLField(max_length=150, verbose_name="название")
-    courses = models.ForeignKey(
-        "Course", **NULLABLE, on_delete=models.CASCADE, verbose_name="курс"
+    link_video = models.URLField(max_length=150, **NULLABLE, verbose_name="название")
+    course = models.ForeignKey(
+        "Course",
+        **NULLABLE,
+        on_delete=models.CASCADE,
+        verbose_name="курс",
+        related_name="lessons",
     )
 
     def __str__(self):
