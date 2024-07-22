@@ -1,7 +1,7 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
-from lms.models import Course
+from lms.models import Course, Lesson
 
 METHOD_CHOICES = {
     "cash": "Наличные",
@@ -38,6 +38,9 @@ class Payments(models.Model):
     pay_day = models.DateTimeField(auto_now_add=True, verbose_name="Дата оплаты")
     paid_course = models.ForeignKey(
         Course, on_delete=models.CASCADE, verbose_name="Оплаченный курс"
+    )
+    paid_lesson = models.ForeignKey(
+        Lesson, on_delete=models.CASCADE, verbose_name="Оплаченный урок"
     )
     amount = models.IntegerField(verbose_name="Сумма к оплате")
     pay_method = models.CharField(choices=METHOD_CHOICES, verbose_name="Метод оплаты")
