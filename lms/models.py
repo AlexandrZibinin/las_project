@@ -4,7 +4,7 @@ from config.settings import NULLABLE
 
 
 class Course(models.Model):
-    title = models.CharField(max_length=25, verbose_name="название")
+    title = models.CharField(max_length=25, verbose_name="название", **NULLABLE)
     preview = models.ImageField(
         upload_to="lms/images", **NULLABLE, verbose_name="превью"
     )
@@ -20,7 +20,7 @@ class Course(models.Model):
 
 
 class Lesson(models.Model):
-    title = models.CharField(max_length=25, verbose_name="название")
+    title = models.CharField(max_length=25, verbose_name="название", **NULLABLE)
     preview = models.ImageField(
         upload_to="lms/images", **NULLABLE, verbose_name="превью"
     )
