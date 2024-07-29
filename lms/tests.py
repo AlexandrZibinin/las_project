@@ -70,11 +70,11 @@ class CourseTestCase(APITestCase):
         )
 
 
-    def test_course_create(self):
+    def test_course_list(self):
         url = reverse("lms:course-list")
         response = self.client.get(url)
         self.assertEqual(
-            response.status_code, status.HTTP_200_OK_CREATED
+            response.status_code, status.HTTP_200_OK
         )
 
 
