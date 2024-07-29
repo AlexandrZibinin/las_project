@@ -1,21 +1,26 @@
+from rest_framework import generics, status
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.generics import (
     CreateAPIView,
     ListAPIView,
     RetrieveAPIView,
     UpdateAPIView,
-    DestroyAPIView,
+    DestroyAPIView, get_object_or_404,
 )
 
-from lms.models import Course, Lesson
-from lms.serializer import CourseSerializer, LessonSerializer
+from lms.models import Course, Lesson, Subscription
+from lms.paginations import CustomPagination
+from lms.serializer import CourseSerializer, LessonSerializer, SubscriptionSerializer
 from users.permissions import IsModerator, IsOwnerOrReadOnly
 
 
 class CourseViewSet(ModelViewSet):
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
+    pagination_class = CustomPagination
 
     def get_permissions(self):
         if self.action == 'create':
@@ -49,6 +54,7 @@ class LessonListApiView(ListAPIView):
     permission_classes = [IsAuthenticated, IsOwnerOrReadOnly | IsModerator]
     queryset = Lesson.objects.all()
     serializer_class = LessonSerializer
+    pagination_class = CustomPagination
 
 
 
@@ -72,3 +78,27 @@ class LessonDestroyAPIView(DestroyAPIView):
     permission_classes = [IsAuthenticated, IsOwnerOrReadOnly, ~IsModerator]
     queryset = Lesson.objects.all()
     serializer_class = LessonSerializer
+
+
+class SubscriptionAPIView(APIView):
+    def post(self, request):
+        user = request.user
+        course_id = request.data.get('course_id')
+        course = get_object_or_404(Course, id=course_id)
+
+        subscription, created = Subscription.objects.get_or_create(user=user, course=course)
+        print(subscription)
+        if not created:
+            subscription.delete()
+            message = 'Subscription removed'
+        else:
+            message = 'Subscription added'
+
+        return Response({"message": message}, status=status.HTTP_201_CREATED)
+
+    def get(self, request):
+        user = request.user
+        subscriptions = Subscription.objects.filter(user=user)
+        serializer = SubscriptionSerializer(subscriptions, many=True)
+        return Response(serializer.data)
+

@@ -1,10 +1,12 @@
 from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
 
-from lms.models import Course, Lesson
+from lms.models import Course, Lesson, Subscription
+from lms.validators import validate_resurce
 
 
 class LessonSerializer(ModelSerializer):
+    link_video = serializers.URLField(validators=[validate_resurce])
     class Meta:
         model = Lesson
         fields = "__all__"
@@ -22,4 +24,11 @@ class CourseSerializer(ModelSerializer):
     class Meta:
         model = Course
         fields = '__all__'
+
+
+class SubscriptionSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Subscription
+        fields = "__all__"
 
