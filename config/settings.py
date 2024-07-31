@@ -19,15 +19,19 @@ ALLOWED_HOSTS = []
 
 
 INSTALLED_APPS = [
+    # default apps
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    # django & drf apps
     "rest_framework",
     "rest_framework_simplejwt",
     "django_filters",
+    "drf_yasg",
+    # my apps
     "users",
     "lms",
 ]
@@ -125,3 +129,6 @@ SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=25),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
 }
+
+
+STRIPE_API_KEY = os.getenv("STRIPE_API_KEY")

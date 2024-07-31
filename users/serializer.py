@@ -13,6 +13,8 @@ class UserSerializer(ModelSerializer):
 
 
 class PaymentsSerializer(ModelSerializer):
+    model = Payments
+
     class Meta:
         model = Payments
         fields = "__all__"

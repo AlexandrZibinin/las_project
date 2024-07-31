@@ -1,7 +1,5 @@
-from rest_framework import generics, status
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.response import Response
-from rest_framework.views import APIView
+
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.generics import (
     CreateAPIView,
@@ -9,12 +7,11 @@ from rest_framework.generics import (
     RetrieveAPIView,
     UpdateAPIView,
     DestroyAPIView,
-    get_object_or_404,
 )
 
-from lms.models import Course, Lesson, Subscription
+from lms.models import Course, Lesson
 from lms.paginations import CustomPagination
-from lms.serializer import CourseSerializer, LessonSerializer, SubscriptionSerializer
+from lms.serializer import CourseSerializer, LessonSerializer
 from users.permissions import IsModerator, IsOwnerOrReadOnly
 
 
@@ -94,6 +91,3 @@ class LessonDestroyAPIView(DestroyAPIView):
     permission_classes = (IsAuthenticated, IsOwnerOrReadOnly, ~IsModerator)
     queryset = Lesson.objects.all()
     serializer_class = LessonSerializer
-
-
-
