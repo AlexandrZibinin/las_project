@@ -9,7 +9,9 @@ class Course(models.Model):
         upload_to="lms/images", **NULLABLE, verbose_name="превью"
     )
     description = models.TextField(**NULLABLE, verbose_name="описание")
-    owner = models.ForeignKey("users.User", on_delete=models.CASCADE, verbose_name="Владелец", **NULLABLE)
+    owner = models.ForeignKey(
+        "users.User", on_delete=models.CASCADE, verbose_name="Владелец", **NULLABLE
+    )
 
     def __str__(self):
         return f"{self.title}"
@@ -33,7 +35,9 @@ class Lesson(models.Model):
         verbose_name="курс",
         related_name="lessons",
     )
-    owner = models.ForeignKey("users.User", on_delete=models.CASCADE, verbose_name="Владелец", **NULLABLE)
+    owner = models.ForeignKey(
+        "users.User", on_delete=models.CASCADE, verbose_name="Владелец", **NULLABLE
+    )
 
     def __str__(self):
         return f"{self.title}"
@@ -44,7 +48,9 @@ class Lesson(models.Model):
 
 
 class Subscription(models.Model):
-    user = models.ForeignKey("users.User", on_delete=models.CASCADE, verbose_name="Пользователь", **NULLABLE)
+    user = models.ForeignKey(
+        "users.User", on_delete=models.CASCADE, verbose_name="Пользователь", **NULLABLE
+    )
     course = models.ForeignKey(
         "Course",
         **NULLABLE,

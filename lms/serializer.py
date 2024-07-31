@@ -7,6 +7,7 @@ from lms.validators import validate_resurce
 
 class LessonSerializer(ModelSerializer):
     link_video = serializers.URLField(validators=[validate_resurce])
+
     class Meta:
         model = Lesson
         fields = "__all__"
@@ -20,15 +21,9 @@ class CourseSerializer(ModelSerializer):
     def get_count_course_lessons(instance):
         return Lesson.objects.filter(course=instance.id).count()
 
-
     class Meta:
         model = Course
-        fields = '__all__'
-
-
-class SubscriptionSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = Subscription
         fields = "__all__"
+
+
 

@@ -8,7 +8,8 @@ from rest_framework.generics import (
     ListAPIView,
     RetrieveAPIView,
     UpdateAPIView,
-    DestroyAPIView, get_object_or_404,
+    DestroyAPIView,
+    get_object_or_404,
 )
 
 from lms.models import Course, Lesson, Subscription
@@ -23,11 +24,11 @@ class CourseViewSet(ModelViewSet):
     pagination_class = CustomPagination
 
     def get_permissions(self):
-        if self.action == 'create':
+        if self.action == "create":
             self.permission_classes = (IsAuthenticated, ~IsModerator)
-        elif self.action in ['update', 'retrieve']:
+        elif self.action in ["update", "retrieve"]:
             self.permission_classes = (IsAuthenticated, IsOwnerOrReadOnly | IsModerator)
-        elif self.action == 'destroy':
+        elif self.action == "destroy":
             self.permission_classes = (IsAuthenticated, IsOwnerOrReadOnly, ~IsModerator)
 
         return super().get_permissions()
@@ -65,7 +66,7 @@ class LessonListApiView(ListAPIView):
     def get_queryset(self):
         user = self.request.user
         if user.is_staff:
-            return Course.objects.all()
+            return Lesson.objects.all()
         else:
             return Lesson.objects.filter(owner=user)
 
@@ -95,24 +96,4 @@ class LessonDestroyAPIView(DestroyAPIView):
     serializer_class = LessonSerializer
 
 
-class SubscriptionAPIView(APIView):
-    def post(self, request):
-        user = request.user
-        course_id = request.data.get('course_id')
-        course = get_object_or_404(Course, id=course_id)
 
-        subscription, created = Subscription.objects.get_or_create(user=user, course=course)
-        print(subscription)
-        if not created:
-            subscription.delete()
-            message = 'Subscription removed'
-        else:
-            message = 'Subscription added'
-
-        return Response({"message": message}, status=status.HTTP_201_CREATED)
-
-    def get(self, request):
-        user = request.user
-        subscriptions = Subscription.objects.filter(user=user)
-        serializer = SubscriptionSerializer(subscriptions, many=True)
-        return Response(serializer.data)

@@ -14,67 +14,41 @@ class CourseTestCase(APITestCase):
 
         self.client.force_authenticate(user=self.user)
 
-
     def test_course_retrieve(self):
         url = reverse("lms:course-detail", args=(self.course.pk,))
 
-        data = {
-            "title": "course1"
-        }
+        data = {"title": "course1"}
         response = self.client.get(url, data)
         data = response.json()
 
-        self.assertEqual(
-            response.status_code, status.HTTP_200_OK
-        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-        self.assertEqual(
-            data.get('title'), self.course.title
-        )
+        self.assertEqual(data.get("title"), self.course.title)
 
     def test_course_create(self):
         url = reverse("lms:course-list")
-        data = {
-            "title":"course2"
-        }
+        data = {"title": "course2"}
         response = self.client.post(url, data)
-        self.assertEqual(
-            response.status_code, status.HTTP_201_CREATED
-        )
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
     def test_course_update(self):
         url = reverse("lms:course-detail", args=(self.course.pk,))
 
-        data = {
-            "title": "course2"
-        }
+        data = {"title": "course2"}
         response = self.client.patch(url, data)
         data = response.json()
 
-        self.assertEqual(
-            response.status_code, status.HTTP_200_OK
-        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-        self.assertEqual(
-            data.get('title'), "course2"
-        )
+        self.assertEqual(data.get("title"), "course2")
 
     def test_course_delete(self):
         url = reverse("lms:course-detail", args=(self.course.pk,))
         response = self.client.delete(url)
-        self.assertEqual(
-            response.status_code, status.HTTP_204_NO_CONTENT
-        )
-        self.assertEqual(
-            Course.objects.all().count(), 0
-        )
-
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertEqual(Course.objects.all().count(), 0)
 
     def test_course_list(self):
         url = reverse("lms:course-list")
         response = self.client.get(url)
-        self.assertEqual(
-            response.status_code, status.HTTP_200_OK
-        )
-
-
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
