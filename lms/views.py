@@ -15,6 +15,7 @@ from rest_framework.generics import (
 from lms.models import Course, Lesson, Subscription
 from lms.paginations import CustomPagination
 from lms.serializer import CourseSerializer, LessonSerializer
+from lms.tasks import send_message
 from users.permissions import IsModerator, IsOwnerOrReadOnly
 
 
@@ -44,6 +45,11 @@ class CourseViewSet(ModelViewSet):
             return Course.objects.all()
         else:
             return Course.objects.filter(owner=user)
+
+    def perform_update(self, serializer):
+        instance = serializer.save()
+        send_message.delay(instance.pk)
+        instance.save()
 
 
 class LessonCreateApiView(CreateAPIView):

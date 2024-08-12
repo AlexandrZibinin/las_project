@@ -19,19 +19,17 @@ ALLOWED_HOSTS = []
 
 
 INSTALLED_APPS = [
-    # default apps
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    # django & drf apps
     "rest_framework",
     "rest_framework_simplejwt",
     "django_filters",
     "drf_yasg",
-    # my apps
+    "django_celery_beat",
     "users",
     "lms",
 ]
@@ -132,3 +130,29 @@ SIMPLE_JWT = {
 
 
 STRIPE_API_KEY = os.getenv("STRIPE_API_KEY")
+
+CELERY_TIMEZONE = TIME_ZONE
+CELERY_TASK_TRACK_STARTED = True
+CELERY_TASK_TIME_LIMIT = 30 * 60
+
+CELERY_BROKER_URL = "redis://127.0.0.1:6379/0"
+CELERY_RESULT_BACKEND = "redis://127.0.0.1:6379/0"
+
+EMAIL_HOST = "smtp.yandex.ru"
+EMAIL_PORT = 465
+EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
+EMAIL_USE_TLS = os.getenv("EMAIL_USE_TLS") == "True"
+EMAIL_USE_SSL = os.getenv("EMAIL_USE_SSL") == "True"
+
+SERVER_EMAIL = EMAIL_HOST_USER
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers:DatabaseScheduler"
+
+CELERY_BEAT_SCHEDULE = {
+    "last_login_check": {
+        "task": "users.tasks.last_login_check",
+        "schedule": timedelta(minutes=1),
+    },
+}

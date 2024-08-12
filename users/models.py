@@ -13,13 +13,12 @@ METHOD_CHOICES = {
 class User(AbstractUser):
     username = None
     email = models.EmailField(unique=True, verbose_name="почта")
-    phone = models.CharField(
-        max_length=35, blank=True, null=True, verbose_name="телефон"
-    )
-    city = models.CharField(max_length=35, blank=True, null=True, verbose_name="город")
+    phone = models.CharField(max_length=35, **NULLABLE, verbose_name="телефон")
+    city = models.CharField(max_length=35, **NULLABLE, verbose_name="город")
     avatar = models.ImageField(
-        upload_to="users/avatars", blank=True, null=True, verbose_name="аватар"
+        upload_to="users/avatars", **NULLABLE, verbose_name="аватар"
     )
+    last_login = models.DateField(verbose_name="дата последнего входа", **NULLABLE)
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
