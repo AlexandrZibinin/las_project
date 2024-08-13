@@ -1,6 +1,6 @@
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
-from rest_framework.permissions import IsAuthenticated, AllowAny
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 
 from rest_framework.viewsets import ModelViewSet
@@ -28,9 +28,11 @@ class CourseViewSet(ModelViewSet):
         if self.action == "create":
             self.permission_classes = (IsAuthenticated, ~IsModerator)
         elif self.action in ["update", "retrieve"]:
-            self.permission_classes = (IsAuthenticated, IsOwnerOrReadOnly | IsModerator)
+            self.permission_classes = (IsAuthenticated,
+                                       IsOwnerOrReadOnly | IsModerator)
         elif self.action == "destroy":
-            self.permission_classes = (IsAuthenticated, IsOwnerOrReadOnly, ~IsModerator)
+            self.permission_classes = (IsAuthenticated,
+                                       IsOwnerOrReadOnly, ~IsModerator)
 
         return super().get_permissions()
 

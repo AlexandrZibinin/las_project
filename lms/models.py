@@ -4,13 +4,15 @@ from config.settings import NULLABLE
 
 
 class Course(models.Model):
-    title = models.CharField(max_length=25, verbose_name="название", **NULLABLE)
+    title = models.CharField(max_length=25, verbose_name="название",
+                             **NULLABLE)
     preview = models.ImageField(
         upload_to="lms/images", **NULLABLE, verbose_name="превью"
     )
     description = models.TextField(**NULLABLE, verbose_name="описание")
     owner = models.ForeignKey(
-        "users.User", on_delete=models.CASCADE, verbose_name="Владелец", **NULLABLE
+        "users.User", on_delete=models.CASCADE, verbose_name="Владелец",
+        **NULLABLE
     )
 
     def __str__(self):
@@ -22,12 +24,14 @@ class Course(models.Model):
 
 
 class Lesson(models.Model):
-    title = models.CharField(max_length=25, verbose_name="название", **NULLABLE)
+    title = models.CharField(max_length=25, verbose_name="название",
+                             **NULLABLE)
     preview = models.ImageField(
         upload_to="lms/images", **NULLABLE, verbose_name="превью"
     )
     description = models.TextField(**NULLABLE, verbose_name="описание")
-    link_video = models.URLField(max_length=150, **NULLABLE, verbose_name="название")
+    link_video = models.URLField(max_length=150, **NULLABLE,
+                                 verbose_name="название")
     course = models.ForeignKey(
         "Course",
         **NULLABLE,
@@ -36,7 +40,8 @@ class Lesson(models.Model):
         related_name="lessons",
     )
     owner = models.ForeignKey(
-        "users.User", on_delete=models.CASCADE, verbose_name="Владелец", **NULLABLE
+        "users.User", on_delete=models.CASCADE, verbose_name="Владелец",
+        **NULLABLE
     )
 
     def __str__(self):
@@ -49,7 +54,8 @@ class Lesson(models.Model):
 
 class Subscription(models.Model):
     user = models.ForeignKey(
-        "users.User", on_delete=models.CASCADE, verbose_name="Пользователь", **NULLABLE
+        "users.User", on_delete=models.CASCADE, verbose_name="Пользователь",
+        **NULLABLE
     )
     course = models.ForeignKey(
         "Course",

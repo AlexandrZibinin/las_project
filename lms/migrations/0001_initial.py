@@ -23,7 +23,8 @@ class Migration(migrations.Migration):
                         verbose_name="ID",
                     ),
                 ),
-                ("title", models.CharField(max_length=25, verbose_name="название")),
+                ("title", models.CharField(max_length=25,
+                                           verbose_name="название")),
                 (
                     "preview",
                     models.ImageField(
@@ -35,7 +36,8 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "description",
-                    models.TextField(blank=True, null=True, verbose_name="описание"),
+                    models.TextField(blank=True, null=True,
+                                     verbose_name="описание"),
                 ),
                 (
                     "link_video",
@@ -55,7 +57,8 @@ class Migration(migrations.Migration):
                         verbose_name="ID",
                     ),
                 ),
-                ("title", models.CharField(max_length=25, verbose_name="название")),
+                ("title", models.CharField(max_length=25,
+                                           verbose_name="название")),
                 (
                     "preview",
                     models.ImageField(
@@ -67,7 +70,8 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "description",
-                    models.TextField(blank=True, null=True, verbose_name="описание"),
+                    models.TextField(blank=True, null=True,
+                                     verbose_name="описание"),
                 ),
                 (
                     "lesson",
